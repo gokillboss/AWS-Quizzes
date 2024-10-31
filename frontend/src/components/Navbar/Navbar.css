@@ -1,0 +1,45 @@
+.custom-navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff !important;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #17a2b8 !important;
+}
+
+.custom-link {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.custom-link:hover {
+  color: #17a2b8 !important;
+}
+
+.custom-button {
+  border-color: #17a2b8;
+  color: #17a2b8;
+  transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .navbar-nav {
+    padding-top: 1rem;
+  }
+  
+  .custom-button {
+    margin-top: 0.5rem;
+  }
+}

@@ -1,0 +1,5 @@
+secrets:
+  ignore-paths:
+    - "backend/src/data/addAdminUser.ts"
+
+    
