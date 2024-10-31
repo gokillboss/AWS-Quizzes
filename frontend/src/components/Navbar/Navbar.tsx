@@ -63,7 +63,7 @@ const Header: React.FC = () => {
                 <Nav.Link as={Link} to="/login" className="custom-link mx-2">
                   Login
                 </Nav.Link>
-                <Nav.Link as={Link} to="/register" className="custom-link mx-2">
+                <Nav.Link as={Link} to="/signup" className="custom-link mx-2">
                   Register
                 </Nav.Link>
               </>

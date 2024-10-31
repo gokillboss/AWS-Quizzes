@@ -5,6 +5,9 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
 import Navbar from "./components/Navbar/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Login from "./pages/Auth/Login/Login";
+import SignUp from "./pages/Auth/SignUp/SignUp";
 
 function App() {
   return (
@@ -14,6 +17,12 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route element={<ProtectedRoute />}>
+            
+            
+            </Route>
           </Routes>
         </Container>
       </Router>
