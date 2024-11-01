@@ -14,8 +14,9 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { user: { id: string } };
-    req.user = decoded.user;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+    req.user = { id: decoded.userId }; // Set user ID directly on req.user
+    console.log("Decoded user ID:", req.user.id); // Debug log to confirm user ID is extracted
     next();
   } catch (err) {
     console.error('Token verification failed:', err instanceof Error ? err.message : err);

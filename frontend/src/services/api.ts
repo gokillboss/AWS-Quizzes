@@ -7,8 +7,19 @@ const api = axios.create({
 });
 
 // Add an interceptor to attach the token to every request
+// api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+//   const token = localStorage.getItem('token');
+//   if (token && config.headers) {
+//     config.headers['x-auth-token'] = token;
+//   }
+//   return config;
+// }, (error) => {
+//   return Promise.reject(error);
+// });
+
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem('token');
+  console.log("Token from localStorage:", token);  // Debug line
   if (token && config.headers) {
     config.headers['x-auth-token'] = token;
   }
@@ -16,6 +27,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 }, (error) => {
   return Promise.reject(error);
 });
+
 
 // Define interfaces for expected data structures
 interface UserData {
