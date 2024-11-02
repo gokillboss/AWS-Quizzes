@@ -52,10 +52,12 @@ const Profile: React.FC = () => {
     e.preventDefault();
     setIsSaving(true);
 
-    const profileData = new FormData();
-    profileData.append("firstName", firstName);
-    profileData.append("lastName", lastName);
-    profileData.append("phone", phone);
+    // Send JSON data instead of FormData
+    const profileData = {
+      firstName,
+      lastName,
+      phone,
+    };
 
     try {
       const res = await updateUserProfile(profileData);
@@ -186,7 +188,7 @@ const Profile: React.FC = () => {
                 <Button
                   variant="outline-primary"
                   className="change-password-btn"
-                  onClick={handleShowPasswordModal} // Opens the password modal
+                  onClick={handleShowPasswordModal}
                   disabled={isEditing || isSaving}
                 >
                   Change Password

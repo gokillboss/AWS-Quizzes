@@ -62,8 +62,14 @@ export const resetPassword = (token: string, passwordData: PasswordData): Promis
 
 // User
 export const getUserProfile = (): Promise<AxiosResponse<any>> => api.get('/user/profile');
-export const updateUserProfile = (formData: FormData): Promise<AxiosResponse<any>> => api.post('/user/profile', formData);
 export const updatePassword = (passwordData: PasswordData): Promise<AxiosResponse<any>> => api.post('/user/updatePassword', passwordData);
+export const updateUserProfile = async (profileData: object): Promise<AxiosResponse<any>> => {
+  return api.put('/user/profile', profileData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
 
 // Quiz
 export const getQuizzes = (): Promise<AxiosResponse<any>> => api.get('/quiz');

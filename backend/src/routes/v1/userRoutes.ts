@@ -9,7 +9,7 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 router.get('/profile', auth, getUserProfile);
-router.post('/profile', auth, updateUserProfile);
+router.put('/profile', auth, updateUserProfile);
 router.post('/updatePassword', auth, updatePassword);
 
 export default router;
