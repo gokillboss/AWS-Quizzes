@@ -8,6 +8,10 @@ interface UserRequest extends Request {
   };
 }
 
+interface AuthRequest extends Request {
+  user?: { id: string };
+}
+
 // Lấy tất cả người dùng
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -53,8 +57,9 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 };
 
 // Lấy thông tin hồ sơ người dùng
-export const getUserProfile = async (req: UserRequest, res: Response): Promise<void> => {
+export const getUserProfile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    console.log("Fetching profile for user ID:", req.user?.id); // Log user ID to verify
     const user = await User.findById(req.user?.id).select('-password');
     if (!user) {
       res.status(404).json({ message: 'User not found' });
