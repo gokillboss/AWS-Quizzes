@@ -45,6 +45,13 @@ interface QuizAnswers {
   answers: Record<string, any>; // Update according to your answer structure
 }
 
+interface Question {
+  id: string;
+  text: string;
+  options: string[];
+  correctAnswer: string;
+}
+
 interface CheckoutSessionResponse {
   sessionId: string;
 }
@@ -72,8 +79,9 @@ export const updateUserProfile = async (profileData: object): Promise<AxiosRespo
 };
 
 // Quiz
-export const getQuizzes = (): Promise<AxiosResponse<any>> => api.get('/quiz');
+export const getQuizzes = (): Promise<AxiosResponse<any>> => api.get('/quiz/all');
 export const getQuiz = (id: string): Promise<AxiosResponse<any>> => api.get(`/quiz/${id}`);
+export const getQuestionById = (id: string): Promise<AxiosResponse<Question>> => api.get(`/question/${id}`);
 export const submitQuiz = (id: string, answers: QuizAnswers): Promise<AxiosResponse<any>> => api.post(`/quiz/${id}/submit`, answers);
 
 // Results

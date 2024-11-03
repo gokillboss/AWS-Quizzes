@@ -11,7 +11,8 @@ router.get('/', (req: Request, res: Response) => {
     res.send('API v1 is working!');
 });
 
-router.use('/quiz', quizRoute);
+// Use the correct path prefix
+router.use('/quiz', quizRoute); 
 router.use('/user', userRoute); 
 router.use('/auth', authRoute);
 router.use('/payment', paymentRoute);

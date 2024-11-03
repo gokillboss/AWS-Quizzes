@@ -1,3 +1,4 @@
+// questionModel.ts
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
 interface IOption {
@@ -9,7 +10,7 @@ interface IQuestion extends Document {
   quizId: Types.ObjectId;
   questionText: string;
   options: IOption[];
-  category: 1 | 2 | 3 | 4; // Restrict category to values 1, 2, 3, 4
+  category: 1 | 2 | 3 | 4;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -21,13 +22,27 @@ const optionSchema = new Schema<IOption>({
 
 const questionSchema = new Schema<IQuestion>(
   {
-    quizId: { type: Schema.Types.ObjectId, ref: 'Quiz', required: true },
-    questionText: { type: String, required: true },
+    quizId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'Quiz', 
+      required: true,
+      index: true // Thêm index để tối ưu queries
+    },
+    questionText: { 
+      type: String, 
+      required: true 
+    },
     options: [optionSchema],
-    category: { type: Number, required: true, enum: [1, 2, 3, 4] },
+    category: { 
+      type: Number, 
+      required: true, 
+      enum: [1, 2, 3, 4] 
+    },
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
 

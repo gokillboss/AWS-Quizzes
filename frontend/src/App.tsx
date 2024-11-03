@@ -10,6 +10,8 @@ import Login from "./pages/Auth/Login/Login";
 import SignUp from "./pages/Auth/SignUp/SignUp";
 import EmailConfirmation from "./components/EmailConfirmation/EmailConfirmation";
 import Profile from "./pages/Auth/Profile/Profile";
+import Quizzes from "./pages/Quiz/Quizzes";
+import QuizDetail from "./components/QuizDetail/Quizdetail";
 
 function App() {
   return (
@@ -22,8 +24,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/confirm/:token" element={<EmailConfirmation />} />
+           
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<Profile />} />
+              <Route path="/quizzes" element={<Quizzes />} />
+              <Route path="/quizzes/:id" element={<QuizDetail />} />
+              
             </Route>
           </Routes>
         </Container>
