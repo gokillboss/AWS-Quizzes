@@ -12,6 +12,12 @@ import EmailConfirmation from "./components/EmailConfirmation/EmailConfirmation"
 import Profile from "./pages/Auth/Profile/Profile";
 import Quizzes from "./pages/Quiz/Quizzes";
 import QuizDetail from "./components/QuizDetail/Quizdetail";
+import Footer from "./components/Footer/Footer";
+import ExamPage from "./pages/Exam/ExamPage";
+import Exam from "./components/Exam/Exam";
+import FindPassword from "./pages/Auth/FindPassword/FindPassword";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
+import TermsOfService from "./components/TermOfService/TermOfService";
 
 function App() {
   return (
@@ -24,15 +30,20 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/confirm/:token" element={<EmailConfirmation />} />
-           
+            <Route path="/find-password" element={<FindPassword />} />
+            <Route path="/resetPassword/:token" element={<ResetPassword />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/quizzes" element={<Quizzes />} />
               <Route path="/quizzes/:id" element={<QuizDetail />} />
-              
+              <Route path="/exams" element={<ExamPage />} />
+              <Route path="/exams/:id" element={<Exam />} />
             </Route>
           </Routes>
+          
         </Container>
+        <Footer />
       </Router>
     </div>
   );

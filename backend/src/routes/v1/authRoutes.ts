@@ -13,7 +13,7 @@ router.get('/', (req: Request, res: Response) => {
 router.post('/signup', signupLimiter, signup);
 router.post('/login', loginLimiter, login);
 router.get('/confirm/:token', confirmEmail);
-router.post('/findPassword', resetPasswordLimiter, findPassword);
+router.post('/findPassword', findPassword);
 router.post('/resetPassword/:token', resetPassword);
 
 export default router;

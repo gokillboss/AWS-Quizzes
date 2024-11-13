@@ -44,7 +44,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ show, handleClose }) =>
 
     try {
       // Call the API to update the password
-      const passwordData: PasswordData = { currentPassword: currentPassword, newPassword: newPassword, oldPassword: currentPassword };
+      const passwordData: PasswordData = { currentPassword: currentPassword, newPassword: newPassword, oldPassword: currentPassword, password: newPassword };
       await updatePassword(passwordData);
 
       // Show success modal if the password update is successful

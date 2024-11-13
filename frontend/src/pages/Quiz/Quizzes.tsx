@@ -4,7 +4,7 @@ import './Quizzes.css';
 import { getQuizzes, checkQuizPurchase, createCheckoutSession } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
-import { Stripe } from '@stripe/stripe-js';
+
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY || '');
 
