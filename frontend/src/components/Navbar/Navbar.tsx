@@ -44,7 +44,7 @@ const Header: React.FC = () => {
                 <Nav.Link as={Link} to="/quizzes" className="custom-link mx-2">
                   <Clipboard className="me-1" /> Quizzes
                 </Nav.Link>
-                <Nav.Link as={Link} to="/exam" className="custom-link mx-2">
+                <Nav.Link as={Link} to="/exams" className="custom-link mx-2">
                   <PencilSquare className="me-1" /> Practice Exam
                 </Nav.Link>
                 <Nav.Link as={Link} to="/profile" className="custom-link mx-2">
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
                   onClick={handleLogout}
                   className="custom-button ms-2"
                 >
-                  <BoxArrowRight size={15} />
+                  <BoxArrowRight size={30} />
                 </Button>
               </>
             ) : (

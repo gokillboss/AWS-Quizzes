@@ -16,7 +16,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { EnvelopeCheckFill } from "react-bootstrap-icons";
 import "./SignUp.css";
 
-// Define interfaces for errors
+// eslint-disable-next-line
 interface SignUpData {
   firstName: string;
   lastName: string;

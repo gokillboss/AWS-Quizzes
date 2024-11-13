@@ -1,0 +1,37 @@
+/* Container chính chứa các quizzes */
+.quizzes-container {
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+}
+
+/* Tiêu đề */
+h2 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Card của quiz */
+.quiz-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover trên thẻ quiz */
+.quiz-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  outline: 2px solid #0059ffcc;
+  outline-offset: -4px;
+}
+
+/* Nút chung */
+.quiz-button {
+  font-weight: 500;
+  padding: 10px 15px;
+  font-size: 0.875rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+

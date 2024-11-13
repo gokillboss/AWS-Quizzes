@@ -21,12 +21,11 @@ const quizSchema = new Schema<IQuiz>(
       type: String,
       default: '',
     },
-    questions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Question',
-      },
-    ],
+    questions: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Question',
+      required: true
+    }],
     price: {
       type: Number,
       default: 0,
@@ -35,8 +34,17 @@ const quizSchema = new Schema<IQuiz>(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+// Thêm virtual populate để tối ưu hóa việc lấy questions
+quizSchema.virtual('questionDetails', {
+  ref: 'Question',
+  localField: 'questions',
+  foreignField: '_id',
+});
 
 const Quiz = mongoose.model<IQuiz>('Quiz', quizSchema);
 

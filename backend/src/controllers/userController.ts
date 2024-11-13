@@ -109,7 +109,7 @@ export const updatePassword = async (req: UserRequest, res: Response): Promise<v
     // Kiểm tra mật khẩu hiện tại
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: 'Sai mật khẩu' });
+      res.status(400).json({ message: 'Password Wrong' });
       return;
     }
 

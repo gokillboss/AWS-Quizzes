@@ -1,0 +1,62 @@
+/* Base button style */
+button,
+.btn {
+    padding: 0.75rem 1.5rem; /* Add padding for comfort */
+    font-size: 1rem; /* Standard font size for readability */
+    font-weight: 600; /* Slightly bold for emphasis */
+    border-radius: 0.5rem; /* Rounded corners for a modern look */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor for clarity */
+    transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+}
+
+/* Primary button (default color) */
+button,
+.btn-primary {
+    background-color: #007bff; /* Blue primary color */
+    color: white; /* White text for contrast */
+}
+
+button:hover,
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Secondary button */
+.btn-secondary {
+    background-color: #6c757d; /* Gray secondary color */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+    transform: translateY(-2px);
+}
+
+/* Success button */
+.btn-success {
+    background-color: #28a745; /* Green color for success */
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: translateY(-2px);
+}
+
+/* Disabled state */
+button:disabled,
+.btn:disabled {
+    background-color: #d6d6d6; /* Gray for disabled buttons */
+    color: #a1a1a1;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Additional styles */
+button:focus,
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Blue shadow for focus */
+}
