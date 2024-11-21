@@ -1148,13 +1148,13 @@ const createAWSExam = async () => {
 
     ];
 
-    await Quiz.deleteMany({ title: 'Synthetic AWS Exam' });
+    await Quiz.deleteMany({ title: 'Super Synthetic AWS Exam' });
 
     // Create new quiz
     const awsExamQuiz = await Quiz.create({
-      title: 'Synthetic AWS Exam',
-      description: 'A set of questions to review essential knowledge for AWS certification.',
-      price: 0,
+      title: 'Super Synthetic AWS Exam',
+      description: 'A set of questions same with others quizzes but you can purchase to support maintain the web.',
+      price: 10,
     });
 
     // Add `quizId` to each question in `awsQuestions`
