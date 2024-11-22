@@ -110,4 +110,73 @@ export const createCheckoutSession = async (quizId: string): Promise<CheckoutSes
     }
 };
 
+interface QuestionAnalysisRequest {
+  questionText: string;
+  options: Array<{
+    text: string;
+    isCorrect: boolean;
+  }>;
+  selectedAnswer: string;
+}
+
+interface QueryRequest {
+  userQuery: string;
+  questionText: string;
+  selectedAnswer?: string;
+  options?: Array<{
+    text: string;
+    isCorrect: boolean;
+  }>;
+}
+
+interface AIResponse<T> {
+  success: boolean;
+  data: T;
+}
+
+interface AnalysisResponse {
+  analysis: string;
+}
+
+interface QueryResponse {
+  answer: string;
+}
+
+
+// New exports for AI features
+export const analyzeQuestion = async (data: QuestionAnalysisRequest): Promise<AIResponse<AnalysisResponse>> => {
+    try {
+        const response = await api.post('/ai/analyze', data);
+        return response.data;
+    } catch (error) {
+        console.error('Error analyzing question:', error);
+        throw error;
+    }
+};
+
+export const submitQuery = async (data: QueryRequest): Promise<AIResponse<QueryResponse>> => {
+    try {
+        const response = await api.post('/ai/query', data);
+        return response.data;
+    } catch (error) {
+        console.error('Error submitting query:', error);
+        throw error;
+    }
+};
+
+// Helper function to get AI conversation history (if you implement this feature)
+export const getAIHistory = async (limit: number = 10, page: number = 1): Promise<AxiosResponse<any>> => {
+    try {
+        const response = await api.get('/ai/history', {
+            params: {
+                limit,
+                page
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching AI history:', error);
+        throw error;
+    }
+};
 export default api;

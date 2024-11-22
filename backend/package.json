@@ -34,6 +34,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -46,7 +47,10 @@
     "mongoose": "^8.7.3",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.16",
+    "openai": "^4.73.0",
     "path": "^0.12.7",
+    "react-markdown": "^9.0.1",
+    "react-toastify": "^10.0.6",
     "stripe": "^17.2.1"
   }
 }
