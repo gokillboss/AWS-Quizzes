@@ -24,3 +24,134 @@
   font-size: 0.9rem;
   line-height: 25px;
 }
+
+/* src/components/QuizDetail/Quizdetail.css */
+.question-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-check {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.text-success {
+  font-weight: 500;
+}
+
+.text-danger {
+  font-weight: 500;
+}
+
+.progress {
+  height: 1.5rem;
+}
+
+.progress-bar {
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+}
+
+.card-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+/* Animation for AI Assistant toggle */
+.ai-assistant-card {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Button hover effects */
+.btn-outline-primary:hover .chat-dots,
+.btn-outline-danger:hover .x-circle {
+  transform: scale(1.1);
+}
+
+.btn svg {
+  transition: transform 0.2s ease;
+}
+
+/* Thêm vào Quizdetail.css */
+.ai-wrapper {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  min-height: 40px;
+}
+
+.ai-wrapper.expanded {
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.ai-toggle-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.ai-toggle-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ai-content {
+  position: relative;
+  height: 100%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0;
+  color: #6c757d;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Adjust card styles */
+.question-card {
+  height: 100%;
+  margin-bottom: 0 !important;
+}
+
+/* Adjust row spacing */
+.row {
+  margin-bottom: 2rem;
+}
+
+/* Make columns equal height */
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add spacing between button and assistant */
+.ai-toggle-btn {
+  margin-bottom: 1rem;
+}

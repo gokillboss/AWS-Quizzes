@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Button,
   Container,
   Row,
   Col,
@@ -62,9 +61,10 @@ const Question: React.FC<QuestionProps> = ({
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [shuffledOptions, setShuffledOptions] = useState<Option[]>([]);
-  const [localAnswers, setLocalAnswers] =
-    useState<Record<number, string>>(answers);
-  const [timeLeft, setTimeLeft] = useState<number>(90 * 60); // Initial time set to 90 minutes
+  const [localAnswers, setLocalAnswers] = useState<Record<number, string>>(answers);
+  const [timeLeft, setTimeLeft] = useState<number>(90 * 60);
+  // Add a key state to force AIAssistant remount
+  const [aiKey, setAiKey] = useState<number>(0);
 
   useEffect(() => {
     if (question.options) {
@@ -99,6 +99,12 @@ const Question: React.FC<QuestionProps> = ({
     }
   };
 
+  const handleNext = () => {
+    // Increment aiKey to force AIAssistant remount
+    setAiKey(prev => prev + 1);
+    onNext();
+  };
+
   const renderQuestionGrid = () => {
     return (
       <div className="question-grid">
@@ -109,8 +115,7 @@ const Question: React.FC<QuestionProps> = ({
           const isCurrent = currentQuestion === questionId;
 
           const isCorrect = correctAnswers && correctAnswers[questionId];
-          const isIncorrect =
-            correctAnswers && correctAnswers[questionId] === false;
+          const isIncorrect = correctAnswers && correctAnswers[questionId] === false;
 
           let buttonClass = "question-button ";
           if (isCorrect) {
@@ -187,6 +192,7 @@ const Question: React.FC<QuestionProps> = ({
                 </Col>
               </Form.Group>
               <AIAssistant
+                key={aiKey}
                 questionText={question.questionText}
                 selectedAnswer={selectedAnswer}
                 options={shuffledOptions}
@@ -212,7 +218,7 @@ const Question: React.FC<QuestionProps> = ({
                 </Col>
                 <Col className="d-flex justify-content-end">
                   <button
-                    onClick={onNext}
+                    onClick={handleNext}
                     disabled={currentQuestion === totalQuestions}
                   >
                     Next
