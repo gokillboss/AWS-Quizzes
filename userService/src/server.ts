@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-//import UserRoutes from "./routes/UserRoutes";
+import UserRoutes from "./routes/UserRoutes";
 
 // Load environment variables
 dotenv.config();
