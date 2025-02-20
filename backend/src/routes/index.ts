@@ -4,6 +4,7 @@ import userRoute from './v1/userRoutes';
 import authRoute from './v1/authRoutes';
 import paymentRoute from './v1/paymentRoutes';
 import authMiddleware from '../middlewares/authMiddleware';
+import aiRoutes from './v1/aiRoutes';
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.use('/quiz', quizRoute);
 router.use('/user', userRoute); 
 router.use('/auth', authRoute);
 router.use('/payment', paymentRoute);
+router.use('/ai', aiRoutes);
 
 router.get('/protected', authMiddleware, (req: Request, res: Response) => {
     res.send('You are authorized to access this route!');
