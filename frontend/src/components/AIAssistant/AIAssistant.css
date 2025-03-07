@@ -57,3 +57,57 @@
 .messages-wrapper::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* AIAssistant.css - Bổ sung */
+
+/* Style cho kết quả AI */
+.assistant-message {
+  background-color: #f0f7ff;
+  border-radius: 12px;
+  border-top-left-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.assistant-message .message-content {
+  white-space: pre-line; /* Giữ xuống dòng */
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* Style cho từng phần trong phân tích */
+.assistant-message .message-content h3 {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #0d6efd;
+}
+
+/* Style cho số thứ tự trong danh sách */
+.assistant-message .message-content ol {
+  padding-left: 20px;
+}
+
+.assistant-message .message-content li {
+  margin-bottom: 8px;
+}
+
+/* Style cho các khối code và ví dụ */
+.assistant-message .message-content pre {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 3px solid #0d6efd;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+/* Làm nổi bật các từ khoá quan trọng */
+.assistant-message .message-content strong {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+/* Thêm khoảng cách giữa các đoạn văn */
+.assistant-message .message-content p {
+  margin-bottom: 12px;
+}
