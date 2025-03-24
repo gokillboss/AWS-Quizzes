@@ -27,23 +27,32 @@ interface AnswerQueryRequest extends Request {
   };
 }
 
+// Hàm utility để làm sạch phản hồi
+const cleanResponseText = (text: string): string => {
+  if (!text) return '';
+  // Loại bỏ từ undefined ở cuối
+  return text.replace(/\s*undefined\s*$/, '');
+};
+
 // System prompts
 const ANALYSIS_SYSTEM_PROMPT = `
 You are an AWS Certification expert.
 Analyze the question and answer in the following aspects:
-1. Explanation of why the selected answer is correct/incorrect
-2. Key AWS concepts in the question
-3. AWS services involved and how they connect to each other
-4. Real-life scenarios that may appear on the exam
-5. Real-life examples or similar real-life scenarios
+- Explanation of why the selected answer is correct/incorrect
+- Key AWS concepts in the question
+- AWS services involved and how they connect to each other
+- Real-life scenarios that may appear on the exam
+- Real-life examples or similar real-life scenarios
 
-Answer in English, detailed and easy to understand.`;
+Answer in English, detailed and easy to understand.
+`;
 
 const QUERY_SYSTEM_PROMPT = `
 You are an AWS Certification expert helping students prepare for the exam.
 Answer students' questions in detail, clearly, and provide specific examples when necessary.
 Focus on practical knowledge and common exam scenarios.
-Answer in English.`;
+Answer in English.
+`;
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -103,10 +112,19 @@ Hãy phân tích chi tiết.`;
       max_tokens: 2000
     });
 
-    const analysis = completion.choices[0]?.message?.content;
-    if (!analysis) {
+    // Lấy phản hồi và đảm bảo nó không là null/undefined
+    let analysis = completion.choices[0]?.message?.content || "";
+    
+    // Loại bỏ "undefined" ở cuối nếu có
+    analysis = cleanResponseText(analysis);
+
+    if (!analysis.trim()) {
       throw new CustomError('No response from AI', 500);
     }
+
+    // Log để debug
+    console.log('Analysis result length:', analysis.length);
+    console.log('Analysis result last 20 chars:', analysis.slice(-20));
 
     return res.status(200).json({
       success: true,
@@ -159,10 +177,19 @@ Câu hỏi của học viên: ${userQuery}`;
       max_tokens: 1500
     });
 
-    const answer = completion.choices[0]?.message?.content;
-    if (!answer) {
+    // Lấy phản hồi và đảm bảo nó không là null/undefined
+    let answer = completion.choices[0]?.message?.content || "";
+    
+    // Loại bỏ "undefined" ở cuối nếu có
+    answer = cleanResponseText(answer);
+
+    if (!answer.trim()) {
       throw new CustomError('No response from AI', 500);
     }
+
+    // Log để debug
+    console.log('Answer result length:', answer.length);
+    console.log('Answer result last 20 chars:', answer.slice(-20));
 
     return res.status(200).json({
       success: true,
