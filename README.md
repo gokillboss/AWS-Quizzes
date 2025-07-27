@@ -181,14 +181,7 @@ The application will be available at:
 4. **Purchase** premium quizzes (if required)
 5. **Take** practice tests with AI assistance
 6. **Review** results and explanations
-7. **Track** your progress over time
 
-### For Administrators
-1. Access admin dashboard
-2. Manage quiz content
-3. Monitor user progress
-4. Handle payment issues
-5. View analytics and reports
 
 ## 🤖 AI Features
 
@@ -213,33 +206,6 @@ The application is fully responsive and works seamlessly on:
 - Tablets
 - Mobile devices
 
-## 🔧 API Endpoints
-
-### Authentication
-- `POST /api/v1/auth/signup` - User registration
-- `POST /api/v1/auth/login` - User login
-- `GET /api/v1/auth/confirm/:token` - Email verification
-- `POST /api/v1/auth/findPassword` - Password reset request
-- `POST /api/v1/auth/resetPassword/:token` - Password reset
-
-### User Management
-- `GET /api/v1/user/profile` - Get user profile
-- `PUT /api/v1/user/profile` - Update user profile
-- `POST /api/v1/user/updatePassword` - Change password
-
-### Quizzes
-- `GET /api/v1/quiz/all` - Get all quizzes
-- `GET /api/v1/quiz/:id` - Get specific quiz
-- `POST /api/v1/quiz/:id/submit` - Submit quiz answers
-
-### AI Assistant
-- `POST /api/v1/ai/analyze` - Analyze questions
-- `POST /api/v1/ai/query` - Submit user queries
-
-### Payments
-- `POST /api/v1/payment/create-checkout-session` - Create payment session
-- `GET /api/v1/payment/check-purchase` - Verify purchase status
-- `POST /api/v1/payment/webhook` - Stripe webhook handler
 
 ## 🚀 Deployment
 
@@ -251,13 +217,6 @@ MONGO_URI=your_production_mongodb_url
 CLIENT_URL=https://your-domain.com
 ```
 
-### Deployment Steps
-1. Build the frontend: `npm run build`
-2. Configure your web server (nginx, Apache)
-3. Set up SSL certificates
-4. Configure production database
-5. Update Stripe webhook endpoints
-6. Deploy to your hosting platform
 
 ## 🤝 Contributing
 
@@ -267,15 +226,6 @@ CLIENT_URL=https://your-domain.com
 4. Push to the branch: `git push origin feature-name`
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🐛 Known Issues
-
-- AI responses may occasionally include "undefined" text (cleaning logic implemented)
-- Rate limiting may need adjustment based on usage patterns
-- Email delivery may be delayed in some cases
 
 ## 🎯 Future Enhancements
 
@@ -287,12 +237,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Achievement system
 - [ ] Study group functionality
 
-## 📞 Support
 
-For support and questions:
-- Email: support.awscertprep@gmail.com
-- Create an issue in this repository
-- Check the documentation in the `/docs` folder
 
 ## 🙏 Acknowledgments
 
