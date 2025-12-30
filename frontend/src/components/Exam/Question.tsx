@@ -20,7 +20,24 @@ const shuffleArray = <T,>(array: T[]): T[] => {
     .map(({ value }) => value);
 };
 
-// Define prop types
+// Function to bold the key vocabulary word in questionText
+const boldKeyWord = (text: string, keyWord: string): JSX.Element => {
+  if (!keyWord || keyWord.trim() === '') {
+    return <span>{text}</span>; // Fallback nếu không có keyWord
+  }
+
+  // Tạo regex để match whole word (case-insensitive, tránh bold partial matches)
+  const escapedKeyWord = keyWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`\\b${escapedKeyWord}\\b`, 'gi');
+  
+  // Replace match bằng <strong> (giữ nguyên case gốc)
+  const boldedText = text.replace(regex, (match) => `<strong>${match}</strong>`);
+  
+  // Render HTML string thành JSX (an toàn vì text controlled)
+  return <span dangerouslySetInnerHTML={{ __html: boldedText }} />;
+};
+
+// Define prop types (updated to include keyWord)
 interface Option {
   text: string;
   isCorrect: boolean;
@@ -30,6 +47,7 @@ interface QuestionProps {
   question: {
     newId: number;
     questionText: string;
+    keyWord: string;  // Thêm trường keyWord từ model/DB
     options: Option[];
   };
   onNext: () => void;
@@ -62,7 +80,7 @@ const Question: React.FC<QuestionProps> = ({
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [shuffledOptions, setShuffledOptions] = useState<Option[]>([]);
   const [localAnswers, setLocalAnswers] = useState<Record<number, string>>(answers);
-  const [timeLeft, setTimeLeft] = useState<number>(90 * 60);
+  const [timeLeft, setTimeLeft] = useState<number>(15 * 60);
   // Add a key state to force AIAssistant remount
   const [aiKey, setAiKey] = useState<number>(0);
 
@@ -158,7 +176,10 @@ const Question: React.FC<QuestionProps> = ({
                 )}
                 Question {currentQuestion}
               </Card.Title>
-              <Card.Text>{question.questionText}</Card.Text>
+              {/* Updated: Render questionText với bold keyWord */}
+              <Card.Text>
+                {boldKeyWord(question.questionText, question.keyWord)}
+              </Card.Text>
 
               <Form.Group as={Row} className="mb-3 my-3">
                 <Col sm="12">
@@ -200,7 +221,11 @@ const Question: React.FC<QuestionProps> = ({
 
               <Row className="my-3 d-flex justify-content-between">
                 <Col>
-                  <button onClick={onBack} disabled={currentQuestion === 1}>
+                  <button 
+                    onClick={onBack} 
+                    disabled={currentQuestion === 1}
+                    className="btn btn-secondary"  // Thêm class Bootstrap cho button
+                  >
                     Back
                   </button>
                 </Col>
@@ -220,6 +245,7 @@ const Question: React.FC<QuestionProps> = ({
                   <button
                     onClick={handleNext}
                     disabled={currentQuestion === totalQuestions}
+                    className="btn btn-primary"  // Thêm class Bootstrap cho button
                   >
                     Next
                   </button>

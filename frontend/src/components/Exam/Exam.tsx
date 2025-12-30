@@ -13,7 +13,9 @@ interface Option {
 interface QuestionType {
     _id: string;
     questionText: string;
+    keyWord: string;  // Thêm trường này để khớp với Question prop và model/DB (cho bold)
     options: Option[];
+    category?: number;  // Optional, từ model nếu cần
     newId: number; // Ensure `newId` is defined as `number`
 }
 

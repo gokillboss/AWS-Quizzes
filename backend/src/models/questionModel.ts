@@ -9,6 +9,7 @@ interface IOption {
 interface IQuestion extends Document {
   quizId: Types.ObjectId;
   questionText: string;
+  keyWord: string;  // Thêm trường để lưu từ khóa cần bold trong questionText
   options: IOption[];
   category: 1 | 2 | 3 | 4;
   createdAt?: Date;
@@ -31,6 +32,11 @@ const questionSchema = new Schema<IQuestion>(
     questionText: { 
       type: String, 
       required: true 
+    },
+    keyWord: {  // Thêm trường keyWord (không bắt buộc, để linh hoạt)
+      type: String,
+      required: false,
+      trim: true
     },
     options: [optionSchema],
     category: { 

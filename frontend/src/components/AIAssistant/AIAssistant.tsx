@@ -8,7 +8,7 @@ import "./AIAssistant.css";
 const messageContainerStyle = {
   maxHeight: "400px",
   overflowY: "auto" as const,
-  scrollBehavior: "smooth" as const
+  scrollBehavior: "smooth" as const,
 };
 
 interface AIAssistantProps {
@@ -48,14 +48,17 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
 
   // Function to scroll the messages container to the bottom
   const scrollToBottom = () => {
-    const messagesContainer = document.querySelector('.messages-wrapper');
+    const messagesContainer = document.querySelector(".messages-wrapper");
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
   };
 
   useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1].type === "assistant") {
+    if (
+      messages.length > 0 &&
+      messages[messages.length - 1].type === "assistant"
+    ) {
       animateText(messages[messages.length - 1].content);
     }
   }, [messages]);
@@ -91,12 +94,12 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
       }
     }, 20);
   };
-  
 
   const handleError = (error: any) => {
     console.error("Error:", error);
     const errorMessage =
-      error.response?.data?.message || "An error occurred. Please try again later.";
+      error.response?.data?.message ||
+      "An error occurred. Please try again later.";
     setError(errorMessage);
     addMessage("error", errorMessage);
   };
@@ -133,7 +136,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
 
   const handleAnalyzeQuestion = async (): Promise<void> => {
     if (isLoading) return;
-    
+
     setIsLoading(true);
     setError(null);
     addMessage("user", "Please analyze this AWS question for me.");
@@ -169,9 +172,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
           {messages.length === 0 ? (
             <div className="text-center text-muted empty-message p-4">
               <ChatDots size={40} className="mb-3 text-primary" />
-              <p>
-                Ask a question or click "Analyze Question" for assistance.
-              </p>
+              <p>Ask a question or click "Analyze" for assistance.</p>
             </div>
           ) : (
             <div className="messages-list p-3">
@@ -188,7 +189,11 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
                       </div>
                     ) : (
                       <div className="message-content">
-                        {message.type === "assistant" && message.content === messages[messages.length - 1].content ? animatedMessage : message.content}
+                        {message.type === "assistant" &&
+                        message.content ===
+                          messages[messages.length - 1].content
+                          ? animatedMessage
+                          : message.content}
                       </div>
                     )}
                     <div className="message-timestamp">
@@ -203,7 +208,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
               {isLoading && (
                 <div className="text-center py-3">
                   <Spinner animation="border" variant="primary" size="sm" />
-                  <p className="small text-muted mt-2">Processing your query...</p>
+                  <p className="small text-muted mt-2">
+                    Processing your query...
+                  </p>
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -224,20 +231,28 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
                 disabled={isLoading}
                 className="me-2"
               />
-              <Button type="submit" variant="primary" disabled={isLoading || !inputMessage.trim()}>
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={isLoading || !inputMessage.trim()}
+              >
                 <Send />
               </Button>
             </Form>
           </Col>
           {!isReview && (
             <Col xs={4}>
-              <Button 
-                variant="outline-primary" 
+              <Button
+                variant="outline-primary"
                 className="w-100"
                 onClick={handleAnalyzeQuestion}
                 disabled={isLoading}
               >
-                {isLoading ? <Spinner animation="border" size="sm" /> : "Analyze Question"}
+                {isLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  "Analyze"
+                )}
               </Button>
             </Col>
           )}

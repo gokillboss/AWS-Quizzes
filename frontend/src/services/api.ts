@@ -7,19 +7,9 @@ const api = axios.create({
 });
 
 // Add an interceptor to attach the token to every request
-// api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-//   const token = localStorage.getItem('token');
-//   if (token && config.headers) {
-//     config.headers['x-auth-token'] = token;
-//   }
-//   return config;
-// }, (error) => {
-//   return Promise.reject(error);
-// });
-
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem('token');
-  console.log("Token from localStorage:", token);  // Debug line
+  // console.log("Token from localStorage:", token);  // Comment out for prod
   if (token && config.headers) {
     config.headers['x-auth-token'] = token;
   }
@@ -27,7 +17,6 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 }, (error) => {
   return Promise.reject(error);
 });
-
 
 // Define interfaces for expected data structures
 interface UserData {
@@ -42,14 +31,18 @@ interface PasswordData {
 }
 
 interface QuizAnswers {
-  answers: Record<string, any>; // Update according to your answer structure
+  answers: Record<string, string>; // Specific: questionId -> selected option text
 }
 
-interface Question {
-  id: string;
-  text: string;
-  options: string[];
-  correctAnswer: string;
+interface Question {  // Updated: Match model (thêm keyWord, questionText, isCorrect)
+  newId: number;  // Or _id: string if from DB
+  questionText: string;
+  keyWord: string;  // Để hỗ trợ bold trong UI
+  options: Array<{
+    text: string;
+    isCorrect: boolean;
+  }>;
+  category?: number;  // Optional từ model
 }
 
 interface CheckoutSessionResponse {
@@ -78,15 +71,15 @@ export const updateUserProfile = async (profileData: object): Promise<AxiosRespo
   });
 };
 
-// Quiz
-export const getQuizzes = (): Promise<AxiosResponse<any>> => api.get('/quiz/all');
+// Quiz (updated typing cho Question)
+export const getQuizzes = (): Promise<AxiosResponse<any>> => api.get('/quiz/all');  // Response sẽ có questions với keyWord từ controller
 export const getQuiz = (id: string): Promise<AxiosResponse<any>> => api.get(`/quiz/${id}`);
-export const getQuestionById = (id: string): Promise<AxiosResponse<Question>> => api.get(`/question/${id}`);
+export const getQuestionById = (id: string): Promise<AxiosResponse<Question>> => api.get(`/question/${id}`);  // Updated type
 export const submitQuiz = (id: string, answers: QuizAnswers): Promise<AxiosResponse<any>> => api.post(`/quiz/${id}/submit`, answers);
 
 // Results
 export const getUserResults = (userId: string): Promise<AxiosResponse<any>> => api.get(`/result/user/${userId}`);
-export const getAllQuestions = (): Promise<AxiosResponse<any>> => api.get('/quiz/questions/all');
+export const getAllQuestions = (): Promise<AxiosResponse<Question[]>> => api.get('/quiz/questions/all');  // Updated type
 
 // Payment
 export const checkQuizPurchase = async (quizId: string): Promise<PurchaseCheckResponse> => {
@@ -142,7 +135,6 @@ interface QueryResponse {
   answer: string;
 }
 
-
 // New exports for AI features
 export const analyzeQuestion = async (data: QuestionAnalysisRequest): Promise<AIResponse<AnalysisResponse>> => {
     try {
@@ -179,4 +171,5 @@ export const getAIHistory = async (limit: number = 10, page: number = 1): Promis
         throw error;
     }
 };
+
 export default api;

@@ -17,6 +17,11 @@ var questionSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    keyWord: {
+        type: String,
+        required: false,
+        trim: true
+    },
     options: [optionSchema],
     category: {
         type: Number,

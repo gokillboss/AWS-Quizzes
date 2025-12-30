@@ -39,10 +39,6 @@ const ANALYSIS_SYSTEM_PROMPT = `
 You are an AWS Certification expert.
 Analyze the question and answer in the following aspects:
 - Explanation of why the selected answer is correct/incorrect
-- Key AWS concepts in the question
-- AWS services involved and how they connect to each other
-- Real-life scenarios that may appear on the exam
-- Real-life examples or similar real-life scenarios
 
 Answer in English, detailed and easy to understand.
 `;

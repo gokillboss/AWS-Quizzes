@@ -17,13 +17,13 @@ interface Result {
   isCorrect: boolean;
 }
 
-// Get all quizzes with populated question text
+// Get all quizzes with populated question text (updated to include keyWord for frontend bolding)
 export const getQuizzes = async (req: Request, res: Response): Promise<void> => {
   try {
     const quizzes = await Quiz.find()
       .populate({
         path: 'questions',
-        select: 'questionText options category',
+        select: 'questionText options category keyWord',  // Thêm keyWord để hỗ trợ bold trong UI
         options: { lean: true }
       })
       .lean();
@@ -38,7 +38,7 @@ export const getQuizzes = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// Get a quiz by ID with all questions populated
+// Get a quiz by ID with all questions populated (updated to include keyWord)
 export const getQuizById = async (req: Request, res: Response): Promise<void> => {
   try {
     const quizId = req.params.id;
@@ -46,7 +46,7 @@ export const getQuizById = async (req: Request, res: Response): Promise<void> =>
     const quiz = await Quiz.findById(quizId)
       .populate({
         path: 'questions',
-        select: 'questionText options category',
+        select: 'questionText options category keyWord',  // Thêm keyWord
         options: { lean: true }
       })
       .lean()
@@ -67,7 +67,7 @@ export const getQuizById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// Create a new quiz with specified questions
+// Create a new quiz with specified questions (updated populate to include keyWord)
 export const createQuiz = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, description, questions } = req.body;
@@ -89,12 +89,13 @@ export const createQuiz = async (req: Request, res: Response): Promise<void> => 
 
     const savedQuiz = await newQuiz.save();
     
-    // Populate the saved quiz before sending response
+    // Populate the saved quiz before sending response (thêm keyWord)
     const populatedQuiz = await Quiz.findById(savedQuiz._id)
       .populate({
         path: 'questions',
-        select: 'questionText options category'
-      });
+        select: 'questionText options category keyWord'  // Thêm keyWord
+      })
+      .lean();  // Thêm lean cho consistency và performance
 
     res.status(201).json(populatedQuiz);
   } catch (err) {
@@ -106,12 +107,17 @@ export const createQuiz = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-
+// Submit quiz answers and calculate results (updated populate to include keyWord if needed, but keep minimal for scoring)
 export const submitQuiz = async (req: Request, res: Response): Promise<void> => {
   const { answers } = req.body as { answers: Answer[] };
   
   try {
-    const quiz = await Quiz.findById(req.params.id).populate('questions');
+    const quiz = await Quiz.findById(req.params.id)
+      .populate({
+        path: 'questions',
+        select: 'questionText options'  // Chỉ cần essentials cho scoring; keyWord không cần ở đây
+      });
+    
     if (!quiz) {
       res.status(404).json({ message: 'Quiz not found' });
       return;

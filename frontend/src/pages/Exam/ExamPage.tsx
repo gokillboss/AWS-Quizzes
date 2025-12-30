@@ -79,6 +79,7 @@ const ExamPage: React.FC = () => {
     <Container fluid className="exam-page-container py-5">
       <Row className="g-4">
         {/* Introduction Section */}
+  {/*
         <Col lg={6} md={12} className="align-items-center">
           <h3>Introduction and Exam Rules</h3>
           <p>
@@ -102,7 +103,7 @@ const ExamPage: React.FC = () => {
             ready.
           </p>
         </Col>
-
+*/}
         {/* Quizzes List Section */}
         <Col lg={6} md={12}>
           <Row className="g-4">

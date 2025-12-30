@@ -12,19 +12,35 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 import { ChatDots, XCircle } from "react-bootstrap-icons";
-import { getQuiz, submitQuiz } from "../../services/api";
+import { getQuiz } from "../../services/api";
 import AIAssistant from "../AIAssistant/AIAssistant";
 import "./Quizdetail.css";
+
+// Function to bold the key vocabulary word in questionText
+const boldKeyWord = (text: string, keyWord: string): JSX.Element => {
+  if (!keyWord || keyWord.trim() === '') {
+    return <span>{text}</span>;
+  }
+
+  const escapedKeyWord = keyWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`\\b${escapedKeyWord}\\b`, 'gi');
+  const boldedText = text.replace(regex, (match) => `<strong>${match}</strong>`);
+  
+  return <span dangerouslySetInnerHTML={{ __html: boldedText }} />;
+};
 
 interface Option {
   _id: string;
   text: string;
+  isCorrect: boolean;
 }
 
 interface Question {
   _id: string;
   questionText: string;
+  keyWord: string;
   options: Option[];
+  category?: number;
 }
 
 interface Quiz {
@@ -58,13 +74,12 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 const QuizDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
-  const [randomizedQuestions, setRandomizedQuestions] = useState<Question[]>(
-    []
-  );
+  const [randomizedQuestions, setRandomizedQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [results, setResults] = useState<QuizResults | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showAI, setShowAI] = useState<Record<string, boolean>>({});
+  const [checkedQuestions, setCheckedQuestions] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
 
   const questionsPerPage = 5;
@@ -106,20 +121,36 @@ const QuizDetail: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formattedAnswers = Object.keys(answers).map((questionId) => ({
-      questionId,
-      selectedOption: answers[questionId],
+  const handleCheckAnswer = (questionId: string) => {
+    setCheckedQuestions((prev) => ({
+      ...prev,
+      [questionId]: true,
     }));
-    try {
-      const response = await submitQuiz(id as string, {
-        answers: formattedAnswers,
-      });
-      setResults(response.data);
-    } catch (error) {
-      console.error("Error submitting quiz", error);
-    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // Tính điểm dựa trên data có sẵn từ getQuiz
+    const calculatedResults: Result[] = randomizedQuestions.map((question) => {
+      const selectedOption = answers[question._id] || "";
+      const correctOption = question.options.find(opt => opt.isCorrect);
+      
+      return {
+        questionId: question._id,
+        selectedOption: selectedOption,
+        correctOption: correctOption?.text || "",
+        isCorrect: selectedOption === correctOption?.text,
+      };
+    });
+
+    const score = calculatedResults.filter(r => r.isCorrect).length;
+
+    setResults({
+      score: score,
+      totalQuestions: randomizedQuestions.length,
+      results: calculatedResults,
+    });
   };
 
   const handleNextPage = () => {
@@ -174,14 +205,15 @@ const QuizDetail: React.FC = () => {
             <div key={result.questionId} className="mb-4">
               <Card className="mb-3">
                 <Card.Header>
-                  <h5 className="mb-0">{`${index + 1}. ${
-                    question?.questionText || "Question not found"
-                  }`}</h5>
+                  <h5 className="mb-0">
+                    {`${index + 1}. `}
+                    {question ? boldKeyWord(question.questionText, question.keyWord) : "Question not found"}
+                  </h5>
                 </Card.Header>
                 <Card.Body>
                   {question?.options.map((option) => {
                     const isSelected = result.selectedOption === option.text;
-                    const isCorrect = option.text === result.correctOption;
+                    const isCorrect = option.isCorrect;
                     return (
                       <Form.Check
                         key={option._id}
@@ -192,7 +224,7 @@ const QuizDetail: React.FC = () => {
                         disabled
                         className={`${
                           isCorrect
-                            ? "text-success"
+                            ? "text-success fw-bold"
                             : isSelected
                             ? "text-danger"
                             : ""
@@ -200,6 +232,13 @@ const QuizDetail: React.FC = () => {
                       />
                     );
                   })}
+                  {!result.isCorrect && (
+                    <Alert variant="warning" className="mt-3 mb-0">
+                      <small>
+                        <strong>Correct answer:</strong> {result.correctOption}
+                      </small>
+                    </Alert>
+                  )}
                   <Button
                     variant={
                       showAI[result.questionId]
@@ -232,7 +271,7 @@ const QuizDetail: React.FC = () => {
                   options={
                     question?.options.map((opt) => ({
                       text: opt.text,
-                      isCorrect: opt.text === result.correctOption,
+                      isCorrect: opt.isCorrect,
                     })) || []
                   }
                   isReview={true}
@@ -260,21 +299,67 @@ const QuizDetail: React.FC = () => {
               <Col>
                 <Card className="question-card mb-3">
                   <Card.Body>
-                    <h5>{`${startIndex + index + 1}. ${
-                      question.questionText
-                    }`}</h5>
-                    {question.options.map((option) => (
-                      <Form.Check
-                        key={option._id}
-                        type="radio"
-                        id={`${question._id}-${option._id}`}
-                        name={question._id}
-                        value={option.text}
-                        label={option.text}
-                        onChange={() => handleChange(question._id, option.text)}
-                        className="my-2"
-                      />
-                    ))}
+                    <h5>
+                      {`${startIndex + index + 1}. `}
+                      {boldKeyWord(question.questionText, question.keyWord)}
+                    </h5>
+                    {question.options.map((option) => {
+                      const isChecked = checkedQuestions[question._id];
+                      const isSelected = answers[question._id] === option.text;
+                      const isCorrect = option.isCorrect;
+                      
+                      return (
+                        <Form.Check
+                          key={option._id}
+                          type="radio"
+                          id={`${question._id}-${option._id}`}
+                          name={question._id}
+                          value={option.text}
+                          label={option.text}
+                          onChange={() => handleChange(question._id, option.text)}
+                          disabled={isChecked}
+                          className={`my-2 ${
+                            isChecked && isCorrect
+                              ? "text-success fw-bold"
+                              : isChecked && isSelected && !isCorrect
+                              ? "text-danger"
+                              : ""
+                          }`}
+                        />
+                      );
+                    })}
+                    
+                    {!checkedQuestions[question._id] && answers[question._id] && (
+                      <Button
+                        variant="info"
+                        size="sm"
+                        className="mt-3"
+                        onClick={() => handleCheckAnswer(question._id)}
+                      >
+                        Check Answer
+                      </Button>
+                    )}
+                    
+                    {checkedQuestions[question._id] && (
+                      <Alert 
+                        variant={
+                          question.options.find(opt => opt.text === answers[question._id])?.isCorrect
+                            ? "success"
+                            : "warning"
+                        } 
+                        className="mt-3 mb-0"
+                      >
+                        {question.options.find(opt => opt.text === answers[question._id])?.isCorrect ? (
+                          <small><strong>✓ Correct!</strong></small>
+                        ) : (
+                          <small>
+                            <strong>✗ Incorrect.</strong> The correct answer is: <strong>
+                              {question.options.find(opt => opt.isCorrect)?.text}
+                            </strong>
+                          </small>
+                        )}
+                      </Alert>
+                    )}
                   </Card.Body>
                 </Card>
               </Col>
@@ -314,8 +399,9 @@ const QuizDetail: React.FC = () => {
                         selectedAnswer={answers[question._id] || ""}
                         options={question.options.map((opt) => ({
                           text: opt.text,
-                          isCorrect: false,
+                          isCorrect: checkedQuestions[question._id] ? opt.isCorrect : false,
                         }))}
+                        isReview={checkedQuestions[question._id]}
                       />
                     </div>
                   )}
